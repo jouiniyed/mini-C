@@ -1,0 +1,103 @@
+Dependencies : 
+
+read_characters.o : 
+    - read_characters.c 
+    - read_characters.h
+
+lexer.o : 
+    - read_characters.h
+    - lexer.c 
+    - lexer.h 
+
+parser.o : 
+    - lexer.h 
+    - ast_type.h
+    - parser.h 
+    - parser.c 
+    - ast_constructor.h
+
+ast_constructor.o : 
+    - ast_constructor.c 
+    - ast_constructor.h
+
+ast_traversal.o : 
+    - ast_traversal.c 
+    - ast_traversal.h
+    - ast_type.h
+
+
+main.o :
+    - main.c
+    - parser.h  
+    
+
+some tools to check if you have time :
+    - valgrind
+
+Core Functionality (Must-Haves) : 
+
+    - Assignement :
+        Still sequence of assignments (DONE)
+        x = x + 1; // output : ERROR: x is not declared (DONE)
+    
+    - Boolean expressions : 
+    
+        
+    boolean_expression → disjunction
+
+    disjunction → conjunction OR disjunction | conjunction
+
+    conjunction → negation AND conjunction | negation
+
+    negation → NOT negation | atom
+
+    atom → ( boolean_expression ) | gae
+
+
+
+
+
+
+3 + 5 * 2
+a == b
+(3 + 5) >= 10
+x < 5 && y != 0
+! (x == 10)
+a > b || b < c && c == d
+(3 * a + 2) <= (b / 4) || !(c == 5)
+((x + y) > 10) && (!(z <= 0))
+(1 + 2) == (3 - 0)
+(p + q) * r != (s / t) && (u >= v)
+
+
+
+
+
+void rec_comparison(AstNode **A){
+
+    AstNode *B;
+    AstNode *C;
+    TypeComparisonOperator op;
+    rec_gae(&B);
+    if (current_token().type == EQUAL ||
+    current_token().type == NOT_EQUAL ||
+    current_token().type == LESS ||
+    current_token().type == GREATER ||
+    current_token().type == LESS_EQUAL ||
+    current_token().type == GREATER_EQUAL) {
+        op = get_comparison_operator(current_token().type);
+        advance();
+
+        if(current_token().type == END_OF_SEQUENCE || current_token().type == SEMI){
+            printf("ERROR: Missing right-hand expression after comparison\n");
+            exit(1);
+        }
+
+        rec_comparison(&C);
+        *A = create_comparison_operation(op,B,C);
+    } else {
+        *A = B;
+    }
+
+
+}
