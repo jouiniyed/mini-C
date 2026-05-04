@@ -1,4 +1,4 @@
-# mini_C Calculator
+# mini_C
 
 ![mini_C](mini_c.jpg)
 
